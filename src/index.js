@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App.jsx'; // make sure the file name matches exactly
+import App from './App.jsx';
+import './index.css'; // We'll use Tailwind CSS
 
 ReactDOM.render(
   <React.StrictMode>
