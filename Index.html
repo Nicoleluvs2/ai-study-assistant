@@ -1,47 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Study Companion 📚🎧</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💜 AI Study Companion</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <h1>AI Study Companion 📚🎧</h1>
-    <button id="toggleTheme">🌙 Toggle Dark/Light</button>
-  </header>
+<header>
+  <h1>💜 AI Study Companion</h1>
+  <button id="themeToggle">🌞 / 🌜</button>
+</header>
 
-  <main>
-    <section class="unit-section">
-      <h2>📦 Units</h2>
-      <input type="text" id="newUnit" placeholder="New unit name">
-      <button id="createUnit">➕ Create Unit</button>
-      <ul id="unitList"></ul>
-    </section>
+<main>
+  <aside>
+    <h2>📦 Units</h2>
+    <input type="text" id="newUnit" placeholder="New unit name">
+    <button id="createUnit">Create</button>
+    <ul id="unitList"></ul>
+  </aside>
 
-    <section class="notes-section">
-      <h2>📝 Notes</h2>
-      <textarea id="noteText" placeholder="Paste notes or type here..."></textarea>
-      <button id="saveNote">💾 Save Note</button>
-      <div id="notesContainer"></div>
-    </section>
+  <section>
+    <h2>📝 Notes</h2>
+    <textarea id="noteInput" placeholder="Paste notes here..."></textarea>
+    <button id="saveNote">Save Note</button>
 
-    <section class="recording-section">
-      <h2>🎤 Record Audio</h2>
-      <button id="recordBtn">🎤 Record</button>
-      <button id="stopBtn">⏹ Stop</button>
-      <audio id="audioPlayer" controls></audio>
-      <p id="status"></p>
-    </section>
+    <h3>🎧 Audio Recording</h3>
+    <button id="recordBtn">Start Recording</button>
+    <div id="recordStatus">Idle</div>
 
-    <section class="ai-section">
-      <h2>🤖 AI Features</h2>
-      <button id="generateFlashcards">🃏 Generate Flashcards</button>
-      <button id="summarizeNotes">📝 Summarize Notes</button>
-    </section>
-  </main>
+    <h3>📚 Unit Content</h3>
+    <div id="notesContainer"></div>
 
-  <script src="script.js"></script>
+    <h3>🎙️ Podcast</h3>
+    <button id="playPodcast">Play Podcast for Selected Unit</button>
+  </section>
+</main>
+
+<script src="script.js"></script>
 </body>
 </html>
