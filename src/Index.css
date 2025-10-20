@@ -1,118 +1,43 @@
-/* Tailwind base (if using Tailwind) */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-/* ----------------------------- */
-/* Global styles */
+/* Light mode */
 body {
-  font-family: 'Poppins', sans-serif;
-  background-color: #f5f0ff; /* light purple background */
-  color: #1a1a1a;
+  font-family: 'Segoe UI', sans-serif;
+  background: #f0e6ff;
+  color: #3b0a8d;
   margin: 0;
   padding: 0;
 }
 
-/* Dark mode */
-.dark body {
-  background-color: #1e1e2f; /* dark background */
-  color: #f0f0f5;
+/* Dark mode toggle */
+body.dark-mode {
+  background: #1a1a1a;
+  color: #dcd6f7;
 }
 
-/* ----------------------------- */
-/* Buttons */
 button {
   cursor: pointer;
-  transition: all 0.2s ease;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  transition: 0.2s;
 }
 
 button:hover {
-  opacity: 0.9;
+  opacity: 0.85;
 }
 
-/* ----------------------------- */
-/* Unit list */
-aside li {
-  list-style: none;
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  transition: background 0.2s ease;
-}
-
-aside li:hover {
-  background-color: #e0d4ff; /* slightly brighter purple */
-}
-
-aside li.selected {
-  background-color: #cdb4ff; /* selected unit highlight */
-}
-
-/* ----------------------------- */
-/* Notes and cards */
-.note::before {
-  content: "📝 ";
-}
-
-.flashcard::before {
-  content: "🃏 ";
-}
-
-.summary::before {
-  content: "📑 ";
-}
-
-.podcast::before {
-  content: "🎙️ ";
-}
-
-/* Notes container */
-.note-card {
-  background-color: #fff0ff;
-  border-radius: 0.5rem;
-  padding: 1rem;
-  margin-bottom: 0.5rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-
-/* Dark mode notes */
-.dark .note-card {
-  background-color: #2b2b3c;
-  color: #f0f0f5;
-}
-
-/* ----------------------------- */
-/* Inputs */
 input, textarea, select {
-  border-radius: 0.5rem;
-  border: 1px solid #d1c4e9;
-  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  padding: 6px;
   width: 100%;
-  margin-bottom: 0.5rem;
 }
 
-input:focus, textarea:focus, select:focus {
-  outline: none;
-  border-color: #7c4dff;
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
 }
 
-/* ----------------------------- */
-/* Podcast player */
-.podcast-player {
-  background-color: #e8dfff;
-  border-radius: 0.5rem;
-  padding: 1rem;
-  margin-top: 1rem;
-}
-
-/* Dark mode podcast */
-.dark .podcast-player {
-  background-color: #3a3a56;
-  color: #f0f0f5;
-}
-
-/* ----------------------------- */
-/* Scrollable areas */
-.scrollable {
-  max-height: 250px;
-  overflow-y: auto;
+::-webkit-scrollbar-thumb {
+  background: #8a2be2;
+  border-radius: 4px;
 }
