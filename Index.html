@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Study Companion 📚✨</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>AI Study Companion 📚✨</h1>
+    <button id="themeToggle">🌙 Toggle Dark/Light</button>
+  </header>
+
+  <main>
+    <section class="unit-section">
+      <h2>📂 Units</h2>
+      <input type="text" id="newUnit" placeholder="New unit name..." />
+      <button id="createUnit">➕ Create Unit</button>
+      <ul id="unitList"></ul>
+    </section>
+
+    <section class="notes-section">
+      <h2>📝 Notes & Upload</h2>
+      <textarea id="noteInput" placeholder="Paste text here..."></textarea>
+      <button id="saveNote">💾 Save Note</button>
+
+      <div class="uploads">
+        <label>📄 Upload PDF<input type="file" id="pdfUpload" accept="application/pdf"></label>
+        <label>🎵 Upload Audio<input type="file" id="audioUpload" accept="audio/*"></label>
+        <label>📺 YouTube URL<input type="text" id="youtubeURL" placeholder="https://youtube.com/watch?v=..."><button id="youtubeFetch">Fetch</button></label>
+        <button id="recordAudio">🎤 Record Audio</button>
+      </div>
+
+      <div id="status"></div>
+    </section>
+
+    <section class="notes-display">
+      <h2>📖 Selected Unit Notes</h2>
+      <ul id="notesList"></ul>
+    </section>
+
+    <section class="export-section">
+      <h2>📤 Export</h2>
+      <button id="exportJSON">Export Unit JSON</button>
+      <button id="exportCSV">Export Unit CSV</button>
+    </section>
+
+    <section class="podcast-section">
+      <h2>🎙 Podcast Mode</h2>
+      <button id="startPodcast">▶️ Play Podcast</button>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+  </html>
