@@ -1,128 +1,104 @@
+// --- Theme Toggle ---
+const toggleBtn = document.getElementById('toggleTheme');
+toggleBtn.addEventListener('click', () => {
+  document.body.classList.toggle('dark-mode');
+});
+
+// --- Units ---
 let units = [];
-let selectedUnitId = null;
-let notesData = {};
-let recording = false;
-let mediaRecorder;
-let recordedChunks = [];
+let selectedUnit = null;
 
-const unitList = document.getElementById("unitList");
-const notesList = document.getElementById("notesList");
-const status = document.getElementById("status");
+const newUnitInput = document.getElementById('newUnit');
+const createUnitBtn = document.getElementById('createUnit');
+const unitList = document.getElementById('unitList');
 
-// --- Theme toggle ---
-document.getElementById("themeToggle").addEventListener("click", () => {
-  document.body.classList.toggle("dark-mode");
-});
-
-// --- Create Unit ---
-document.getElementById("createUnit").addEventListener("click", () => {
-  const name = document.getElementById("newUnit").value.trim();
+createUnitBtn.addEventListener('click', () => {
+  const name = newUnitInput.value.trim();
   if (!name) return;
-  const id = `unit_${Date.now()}`;
-  units.push({ id, name });
-  notesData[id] = [];
-  selectedUnitId = id;
+  const unit = { id: Date.now(), name, notes: [] };
+  units.push(unit);
+  selectedUnit = unit.id;
+  newUnitInput.value = '';
   renderUnits();
-  renderNotes();
-  document.getElementById("newUnit").value = "";
 });
 
-// --- Render Units ---
 function renderUnits() {
-  unitList.innerHTML = "";
+  unitList.innerHTML = '';
   units.forEach(u => {
-    const li = document.createElement("li");
-    li.textContent = u.name;
-    li.onclick = () => {
-      selectedUnitId = u.id;
-      renderNotes();
-    };
-    if (u.id === selectedUnitId) li.style.fontWeight = "bold";
+    const li = document.createElement('li');
+    li.textContent = `📦 ${u.name}`;
+    li.addEventListener('click', () => selectedUnit = u.id);
     unitList.appendChild(li);
   });
 }
 
-// --- Save Note ---
-document.getElementById("saveNote").addEventListener("click", () => {
-  const text = document.getElementById("noteInput").value.trim();
-  if (!text || !selectedUnitId) {
-    status.textContent = "Select a unit and add text!";
-    return;
-  }
-  notesData[selectedUnitId].push({ id: Date.now(), text });
+// --- Notes ---
+const noteText = document.getElementById('noteText');
+const saveNoteBtn = document.getElementById('saveNote');
+const notesContainer = document.getElementById('notesContainer');
+
+saveNoteBtn.addEventListener('click', () => {
+  if (!selectedUnit) return alert('Select a unit first!');
+  const unit = units.find(u => u.id === selectedUnit);
+  const note = { id: Date.now(), text: noteText.value };
+  unit.notes.push(note);
+  noteText.value = '';
   renderNotes();
-  document.getElementById("noteInput").value = "";
-  status.textContent = "Note saved!";
 });
 
-// --- Render Notes ---
 function renderNotes() {
-  notesList.innerHTML = "";
-  if (!selectedUnitId) return;
-  notesData[selectedUnitId].forEach(n => {
-    const li = document.createElement("li");
-    li.textContent = n.text.slice(0, 100) + (n.text.length > 100 ? "..." : "");
-    
-    const listenBtn = document.createElement("button");
-    listenBtn.textContent = "🔊 Listen";
-    listenBtn.onclick = () => speak(n.text);
-
-    const flashBtn = document.createElement("button");
-    flashBtn.textContent = "🃏 Flashcards";
-    flashBtn.onclick = () => generateFlashcards(n.text);
-
-    const sumBtn = document.createElement("button");
-    sumBtn.textContent = "📝 Summarize";
-    sumBtn.onclick = () => summarizeNote(n.text);
-
-    li.appendChild(listenBtn);
-    li.appendChild(flashBtn);
-    li.appendChild(sumBtn);
-    notesList.appendChild(li);
+  notesContainer.innerHTML = '';
+  const unit = units.find(u => u.id === selectedUnit);
+  if (!unit) return;
+  unit.notes.forEach(n => {
+    const div = document.createElement('div');
+    div.textContent = n.text;
+    div.style.border = '1px solid #ccc';
+    div.style.padding = '0.5rem';
+    div.style.marginBottom = '0.25rem';
+    div.style.borderRadius = '6px';
+    notesContainer.appendChild(div);
   });
 }
 
-// --- TTS ---
-function speak(text) {
-  if (!text) return;
-  const utter = new SpeechSynthesisUtterance(text);
-  window.speechSynthesis.speak(utter);
-}
+// --- Recording ---
+let mediaRecorder;
+let audioChunks = [];
+const recordBtn = document.getElementById('recordBtn');
+const stopBtn = document.getElementById('stopBtn');
+const audioPlayer = document.getElementById('audioPlayer');
+const status = document.getElementById('status');
 
-// --- Flashcard Stub ---
-function generateFlashcards(text) {
-  alert("Flashcards generated for text:\n" + text.slice(0, 100) + "...");
-}
+recordBtn.onclick = async () => {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    mediaRecorder = new MediaRecorder(stream);
+    audioChunks = [];
 
-// --- Summarize Stub ---
-function summarizeNote(text) {
-  alert("Summary:\n" + text.slice(0, 100) + "...");
-}
+    mediaRecorder.ondataavailable = e => { if (e.data.size > 0) audioChunks.push(e.data); };
+    mediaRecorder.onstart = () => status.textContent = 'Recording... 🎤';
+    mediaRecorder.onstop = () => {
+      const blob = new Blob(audioChunks, { type: 'audio/webm' });
+      audioPlayer.src = URL.createObjectURL(blob);
+      status.textContent = 'Recording stopped ⏹';
+    };
 
-// --- Podcast Stub ---
-document.getElementById("startPodcast").addEventListener("click", () => {
-  if (!selectedUnitId) return alert("Select a unit first!");
-  const notes = notesData[selectedUnitId].map(n => n.text).join(". ");
-  speak("🎙 Podcast Mode: " + notes);
-});
+    mediaRecorder.start();
+  } catch (err) {
+    console.error(err);
+    alert('Microphone access denied or unsupported.');
+  }
+};
 
-// --- File Upload Stubs ---
-document.getElementById("pdfUpload").addEventListener("change", (e) => {
-  const file = e.target.files[0];
-  if (file) status.textContent = "PDF uploaded (stub) ✔️";
-});
+stopBtn.onclick = () => {
+  if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
+};
 
-document.getElementById("audioUpload").addEventListener("change", (e) => {
-  const file = e.target.files[0];
-  if (file) status.textContent = "Audio uploaded (stub) ✔️";
-});
+// --- AI Feature Stubs ---
+document.getElementById('generateFlashcards').onclick = () => {
+  alert('Flashcards would be generated here (stub).');
+};
 
-document.getElementById("youtubeFetch").addEventListener("click", () => {
-  const url = document.getElementById("youtubeURL").value.trim();
-  if (!url) return;
-  status.textContent = "YouTube fetched (stub) ✔️";
-});
-
-// --- Record Audio Stub ---
-document.getElementById("recordAudio").addEventListener("click", async () => {
-  if
+document.getElementById('summarizeNotes').onclick = () => {
+  alert('Summaries would be generated here (stub).');
+};
